@@ -2,23 +2,28 @@ package com.pcmc.bwg.controller;
 
 import com.pcmc.bwg.dto.auth.AdminLoginRequest;
 import com.pcmc.bwg.dto.auth.LoginResponse;
+import com.pcmc.bwg.dto.auth.UnifiedLoginRequest;
 import com.pcmc.bwg.dto.auth.UserLoginRequest;
 import com.pcmc.bwg.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping({"/api/auth", "/api/v1/auth"})
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> unifiedLogin(@RequestBody UnifiedLoginRequest request) {
+        String identifier = request.getEffectiveIdentifier();
+        return ResponseEntity.ok(authService.loginUnified(identifier, request.getPassword(), request.getRole()));
     }
 
     @PostMapping("/admin/login")

@@ -41,9 +41,11 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(eh -> eh.authenticationEntryPoint(restAuthenticationEntryPoint))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/otp/**").permitAll()
                         .requestMatchers("/api/onboarding/**").permitAll()
+                        .requestMatchers("/api/v1/dropdowns/**", "/api/dropdowns/**").permitAll()
+                        .requestMatchers("/api/v1/surveys/**", "/api/surveys/**").permitAll()
                         .requestMatchers(filesPattern).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

@@ -297,18 +297,96 @@
       ]
     },
     {
-      "name": "Onboarding (Public)",
+      "name": "Dropdowns (Public)",
       "item": [
         {
-          "name": "Verify Aadhaar",
+          "name": "Get All Dropdowns Map",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/dropdowns/all", "host": ["{{baseUrl}}"], "path": ["api", "v1", "dropdowns", "all"] }
+          }
+        },
+        {
+          "name": "Get Dropdown Options by Group",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/dropdowns/options?group=COMMERCIAL_SUBCATEGORY", "host": ["{{baseUrl}}"], "path": ["api", "v1", "dropdowns", "options"], "query": [{ "key": "group", "value": "COMMERCIAL_SUBCATEGORY" }] }
+          }
+        },
+        {
+          "name": "Get Wards by Zone",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/dropdowns/wards?zone=Zone%20A", "host": ["{{baseUrl}}"], "path": ["api", "v1", "dropdowns", "wards"], "query": [{ "key": "zone", "value": "Zone A" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Surveys (Public / Authorized)",
+      "item": [
+        {
+          "name": "Create Survey (Full Registration Draft)",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"userId\": {{userId}},\n  \"aadhaarNo\": \"123456789012\"\n}"
+              "raw": "{\n  \"category\": \"residential\",\n  \"establishmentName\": \"Green Meadows Co-Op Housing Society\",\n  \"zone\": \"Zone A\",\n  \"ward\": \"Ward 1 - Akurdi\",\n  \"electoralWard\": \"Electoral Ward 12\",\n  \"contactName\": \"Ramesh Patil\",\n  \"contactDesignation\": \"Society Chairman\",\n  \"contactMobile\": \"9876543210\",\n  \"contactEmail\": \"ramesh.patil@greenmeadows.org\",\n  \"contactAddress\": \"Sector 24, Pradhikaran, Akurdi, PCMC\",\n  \"contactPincode\": \"411044\",\n  \"yearEstablished\": \"2021\",\n  \"premisesPhotoUrl\": \"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00\",\n  \"societyName\": \"Green Meadows\",\n  \"chsRegNo\": \"PNE/PCMC/HSG/2021/8892\",\n  \"totalFloors\": \"12\",\n  \"totalUnits\": \"96\",\n  \"builtUpAreaSqM\": 22500,\n  \"buildingPermissionDocUrl\": \"https://images.unsplash.com/photo-1589829545856-d10d557cf95f\",\n  \"waterConsumerNo\": \"WTR-PCMC-99210\",\n  \"dailyWaterConsumptionLiters\": 42000,\n  \"binInfrastructure\": \"4bin\",\n  \"segregatedAtSource\": \"yes\",\n  \"dryWasteChannelizedTo\": \"Dry Waste Collection Centre\",\n  \"geofenceLatitude\": \"18.647800\",\n  \"geofenceLongitude\": \"73.789100\",\n  \"declarantName\": \"Ramesh Patil\",\n  \"declarantDesignation\": \"Chairman\",\n  \"declarantOrgName\": \"Green Meadows CHS\",\n  \"declarationFileUrl\": \"https://images.unsplash.com/photo-1589829545856-d10d557cf95f\",\n  \"surveyorName\": \"Rajesh Patil (Sanitary Inspector)\",\n  \"surveyorVerified\": true,\n  \"wasteVisits\": [\n    {\n      \"dayNumber\": 1,\n      \"visitDate\": \"23/08/2026\",\n      \"wetWasteKg\": 85,\n      \"dryWasteKg\": 40,\n      \"wetWastePhotoUrl\": \"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00\",\n      \"isCompleted\": true\n    }\n  ]\n}"
             },
-            "url": { "raw": "{{baseUrl}}/api/onboarding/aadhaar/verify", "host": ["{{baseUrl}}"], "path": ["api", "onboarding", "aadhaar", "verify"] }
+            "url": { "raw": "{{baseUrl}}/api/v1/surveys", "host": ["{{baseUrl}}"], "path": ["api", "v1", "surveys"] }
+          }
+        },
+        {
+          "name": "List All Surveys",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/surveys", "host": ["{{baseUrl}}"], "path": ["api", "v1", "surveys"] }
+          }
+        },
+        {
+          "name": "Filter Surveys by Category & Zone",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/surveys?category=residential&zone=Zone%20A", "host": ["{{baseUrl}}"], "path": ["api", "v1", "surveys"], "query": [{ "key": "category", "value": "residential" }, { "key": "zone", "value": "Zone A" }] }
+          }
+        },
+        {
+          "name": "Get Survey by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/surveys/BWG-2026-73910", "host": ["{{baseUrl}}"], "path": ["api", "v1", "surveys", "BWG-2026-73910"] }
+          }
+        },
+        {
+          "name": "Update Day 2 Waste Visit Record",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dayNumber\": 2,\n  \"visitDate\": \"24/08/2026\",\n  \"wetWasteKg\": 90,\n  \"dryWasteKg\": 45,\n  \"wetWastePhotoUrl\": \"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/surveys/BWG-2026-73910/waste-visit", "host": ["{{baseUrl}}"], "path": ["api", "v1", "surveys", "BWG-2026-73910", "waste-visit"] }
+          }
+        },
+        {
+          "name": "Update CPCB Portal Registration Stage",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"completed\": true,\n  \"ackNumber\": \"CPCB-PCMC-2026-99102\",\n  \"submissionDate\": \"23/08/2026\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/surveys/BWG-2026-73910/cpcb", "host": ["{{baseUrl}}"], "path": ["api", "v1", "surveys", "BWG-2026-73910", "cpcb"] }
+          }
+        },
+        {
+          "name": "Get Survey QR Code",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/surveys/BWG-2026-73910/qr", "host": ["{{baseUrl}}"], "path": ["api", "v1", "surveys", "BWG-2026-73910", "qr"] }
           }
         }
       ]
