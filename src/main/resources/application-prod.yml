@@ -1,0 +1,9 @@
+# ===================================================================
+# Production Profile Configuration
+# Activated with: --spring.profiles.active=prod or SPRING_PROFILES_ACTIVE=prod
+# ===================================================================
+spring:
+  datasource:
+    url: ${BWG_DB_URL:jdbc:postgresql://localhost:5432/pcmc_bwg}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:root123}

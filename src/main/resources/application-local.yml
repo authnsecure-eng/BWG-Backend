@@ -1,0 +1,7 @@
+# ===================================================================
+# Local / Development Profile Configuration
+# Activated with: --spring.profiles.active=local or default
+# ===================================================================
+spring:
+  datasource:
+    password: ${DB_PASSWORD:Yadav@0607}

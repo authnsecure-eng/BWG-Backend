@@ -60,6 +60,9 @@ public class SurveyService {
             if (req.getPremisesPhotoUrl() != null) survey.setPremisesPhotoUrl(req.getPremisesPhotoUrl());
             if (req.getPremisesPhotoGeo() != null) survey.setPremisesPhotoGeo(req.getPremisesPhotoGeo());
             if (req.getPremisesPhotoTime() != null) survey.setPremisesPhotoTime(req.getPremisesPhotoTime());
+            if (req.getSignagePhotoUrl() != null) survey.setSignagePhotoUrl(req.getSignagePhotoUrl());
+            if (req.getSignagePhotoGeo() != null) survey.setSignagePhotoGeo(req.getSignagePhotoGeo());
+            if (req.getSignagePhotoTime() != null) survey.setSignagePhotoTime(req.getSignagePhotoTime());
             if (req.getGpsCoordinates() != null) survey.setGpsCoordinates(req.getGpsCoordinates());
             if (req.getSubCategoryType() != null) survey.setSubCategoryType(req.getSubCategoryType());
             if (req.getSocietyName() != null) survey.setSocietyName(req.getSocietyName());
@@ -67,27 +70,43 @@ public class SurveyService {
             if (req.getOrgName() != null) survey.setOrgName(req.getOrgName());
             if (req.getCinNumber() != null) survey.setCinNumber(req.getCinNumber());
             if (req.getTradeLicenseNo() != null) survey.setTradeLicenseNo(req.getTradeLicenseNo());
+            if (req.getPtin() != null) survey.setPtin(req.getPtin());
+            if (req.getGstin() != null) survey.setGstin(req.getGstin());
             if (req.getTotalFloors() != null) survey.setTotalFloors(req.getTotalFloors());
             if (req.getTotalUnits() != null) survey.setTotalUnits(req.getTotalUnits());
             if (req.getBuiltUpAreaSqM() != null) survey.setBuiltUpAreaSqM(req.getBuiltUpAreaSqM());
             if (req.getBuildingRemarks() != null) survey.setBuildingRemarks(req.getBuildingRemarks());
+            if (req.getBuildingPermissionRefNo() != null) survey.setBuildingPermissionRefNo(req.getBuildingPermissionRefNo());
             survey.setBuildingPermissionDocUrl(docUrl);
             if (req.getBuildingPermissionGeo() != null) survey.setBuildingPermissionGeo(req.getBuildingPermissionGeo());
             if (req.getBuildingPermissionTime() != null) survey.setBuildingPermissionTime(req.getBuildingPermissionTime());
             if (req.getWaterConsumerNo() != null) survey.setWaterConsumerNo(req.getWaterConsumerNo());
             if (req.getDailyWaterConsumptionLiters() != null) survey.setDailyWaterConsumptionLiters(req.getDailyWaterConsumptionLiters());
+            if (req.getWaterBillingPeriod() != null) survey.setWaterBillingPeriod(req.getWaterBillingPeriod());
+            if (req.getWaterUnitsConsumed() != null) survey.setWaterUnitsConsumed(req.getWaterUnitsConsumed());
             if (req.getWaterBillDocUrl() != null) survey.setWaterBillDocUrl(req.getWaterBillDocUrl());
             if (req.getBinInfrastructure() != null) survey.setBinInfrastructure(req.getBinInfrastructure());
             if (req.getSegregatedAtSource() != null) survey.setSegregatedAtSource(req.getSegregatedAtSource());
             if (req.getDryWasteChannelizedTo() != null) survey.setDryWasteChannelizedTo(req.getDryWasteChannelizedTo());
+            if (req.getOverallDisposalMode() != null) survey.setOverallDisposalMode(req.getOverallDisposalMode());
+            if (req.getVendorName() != null) survey.setVendorName(req.getVendorName());
+            if (req.getMouValidity() != null) survey.setMouValidity(req.getMouValidity());
+            if (req.getProcessingDestination() != null) survey.setProcessingDestination(req.getProcessingDestination());
+            if (req.getPrivateVendorDetails() != null) survey.setPrivateVendorDetails(req.getPrivateVendorDetails());
             if (req.getHasBiogasPlant() != null) survey.setHasBiogasPlant(req.getHasBiogasPlant());
+            if (req.getProcessingMethod() != null) survey.setProcessingMethod(req.getProcessingMethod());
             if (req.getBiogasCapacity() != null) survey.setBiogasCapacity(req.getBiogasCapacity());
             if (req.getBiogasCapacityUnit() != null) survey.setBiogasCapacityUnit(req.getBiogasCapacityUnit());
+            if (req.getSpaceAvailableSqMeters() != null) survey.setSpaceAvailableSqMeters(req.getSpaceAvailableSqMeters());
+            if (req.getByProductUsage() != null) survey.setByProductUsage(req.getByProductUsage());
             if (req.getBiogasOperationalStatus() != null) survey.setBiogasOperationalStatus(req.getBiogasOperationalStatus());
             if (req.getBiogasPhotoUrl() != null) survey.setBiogasPhotoUrl(req.getBiogasPhotoUrl());
             if (req.getBiogasRemarks() != null) survey.setBiogasRemarks(req.getBiogasRemarks());
+            if (req.getWasteGivenToOtherAgency() != null) survey.setWasteGivenToOtherAgency(req.getWasteGivenToOtherAgency());
+            if (req.getAgencyDocumentPhotoUrl() != null) survey.setAgencyDocumentPhotoUrl(req.getAgencyDocumentPhotoUrl());
             if (req.getGeofenceLatitude() != null) survey.setGeofenceLatitude(req.getGeofenceLatitude());
             if (req.getGeofenceLongitude() != null) survey.setGeofenceLongitude(req.getGeofenceLongitude());
+            if (req.getGeofenceRadiusMeters() != null) survey.setGeofenceRadiusMeters(req.getGeofenceRadiusMeters());
             if (req.getGeofencePhotoUrl() != null) survey.setGeofencePhotoUrl(req.getGeofencePhotoUrl());
             if (req.getEligibilityFloorArea() != null) survey.setEligibilityFloorArea(req.getEligibilityFloorArea());
             if (req.getEligibilityWaterConsumption() != null) survey.setEligibilityWaterConsumption(req.getEligibilityWaterConsumption());
@@ -121,6 +140,9 @@ public class SurveyService {
                     .premisesPhotoUrl(req.getPremisesPhotoUrl())
                     .premisesPhotoGeo(req.getPremisesPhotoGeo())
                     .premisesPhotoTime(req.getPremisesPhotoTime())
+                    .signagePhotoUrl(req.getSignagePhotoUrl())
+                    .signagePhotoGeo(req.getSignagePhotoGeo())
+                    .signagePhotoTime(req.getSignagePhotoTime())
                     .gpsCoordinates(req.getGpsCoordinates())
                     .subCategoryType(req.getSubCategoryType())
                     .societyName(req.getSocietyName())
@@ -128,27 +150,43 @@ public class SurveyService {
                     .orgName(req.getOrgName())
                     .cinNumber(req.getCinNumber())
                     .tradeLicenseNo(req.getTradeLicenseNo())
+                    .ptin(req.getPtin())
+                    .gstin(req.getGstin())
                     .totalFloors(req.getTotalFloors())
                     .totalUnits(req.getTotalUnits())
                     .builtUpAreaSqM(req.getBuiltUpAreaSqM() != null ? req.getBuiltUpAreaSqM() : BigDecimal.ZERO)
                     .buildingRemarks(req.getBuildingRemarks())
+                    .buildingPermissionRefNo(req.getBuildingPermissionRefNo())
                     .buildingPermissionDocUrl(docUrl)
                     .buildingPermissionGeo(req.getBuildingPermissionGeo())
                     .buildingPermissionTime(req.getBuildingPermissionTime())
                     .waterConsumerNo(req.getWaterConsumerNo())
                     .dailyWaterConsumptionLiters(req.getDailyWaterConsumptionLiters() != null ? req.getDailyWaterConsumptionLiters() : BigDecimal.ZERO)
+                    .waterBillingPeriod(req.getWaterBillingPeriod())
+                    .waterUnitsConsumed(req.getWaterUnitsConsumed())
                     .waterBillDocUrl(req.getWaterBillDocUrl())
                     .binInfrastructure(req.getBinInfrastructure())
                     .segregatedAtSource(req.getSegregatedAtSource())
                     .dryWasteChannelizedTo(req.getDryWasteChannelizedTo())
+                    .overallDisposalMode(req.getOverallDisposalMode())
+                    .vendorName(req.getVendorName())
+                    .mouValidity(req.getMouValidity())
+                    .processingDestination(req.getProcessingDestination())
+                    .privateVendorDetails(req.getPrivateVendorDetails())
                     .hasBiogasPlant(req.getHasBiogasPlant() != null ? req.getHasBiogasPlant() : false)
+                    .processingMethod(req.getProcessingMethod())
                     .biogasCapacity(req.getBiogasCapacity())
                     .biogasCapacityUnit(req.getBiogasCapacityUnit())
+                    .spaceAvailableSqMeters(req.getSpaceAvailableSqMeters())
+                    .byProductUsage(req.getByProductUsage())
                     .biogasOperationalStatus(req.getBiogasOperationalStatus())
                     .biogasPhotoUrl(req.getBiogasPhotoUrl())
                     .biogasRemarks(req.getBiogasRemarks())
+                    .wasteGivenToOtherAgency(req.getWasteGivenToOtherAgency())
+                    .agencyDocumentPhotoUrl(req.getAgencyDocumentPhotoUrl())
                     .geofenceLatitude(req.getGeofenceLatitude())
                     .geofenceLongitude(req.getGeofenceLongitude())
+                    .geofenceRadiusMeters(req.getGeofenceRadiusMeters())
                     .geofencePhotoUrl(req.getGeofencePhotoUrl())
                     .eligibilityFloorArea(req.getEligibilityFloorArea() != null ? req.getEligibilityFloorArea() : false)
                     .eligibilityWaterConsumption(req.getEligibilityWaterConsumption() != null ? req.getEligibilityWaterConsumption() : false)
@@ -193,6 +231,8 @@ public class SurveyService {
                         .wetWastePhotoUrl(vDto.getWetWastePhotoUrl())
                         .dryWastePhotoUrl(vDto.getDryWastePhotoUrl())
                         .gardenWastePhotoUrl(vDto.getGardenWastePhotoUrl())
+                        .weighingScalePhotoUrl(vDto.getWeighingScalePhotoUrl())
+                        .handoverAreaPhotoUrl(vDto.getHandoverAreaPhotoUrl())
                         .isCompleted(vDto.getIsCompleted() != null ? vDto.getIsCompleted() : (total.compareTo(BigDecimal.ZERO) > 0 && vDto.getWetWastePhotoUrl() != null))
                         .build();
 
@@ -297,6 +337,8 @@ public class SurveyService {
             if (req.getWetWastePhotoUrl() != null) visit.setWetWastePhotoUrl(req.getWetWastePhotoUrl());
             if (req.getDryWastePhotoUrl() != null) visit.setDryWastePhotoUrl(req.getDryWastePhotoUrl());
             if (req.getGardenWastePhotoUrl() != null) visit.setGardenWastePhotoUrl(req.getGardenWastePhotoUrl());
+            if (req.getWeighingScalePhotoUrl() != null) visit.setWeighingScalePhotoUrl(req.getWeighingScalePhotoUrl());
+            if (req.getHandoverAreaPhotoUrl() != null) visit.setHandoverAreaPhotoUrl(req.getHandoverAreaPhotoUrl());
             visit.setIsCompleted(completed);
             wasteVisitRepository.save(visit);
         } else {
@@ -311,6 +353,8 @@ public class SurveyService {
                     .wetWastePhotoUrl(req.getWetWastePhotoUrl())
                     .dryWastePhotoUrl(req.getDryWastePhotoUrl())
                     .gardenWastePhotoUrl(req.getGardenWastePhotoUrl())
+                    .weighingScalePhotoUrl(req.getWeighingScalePhotoUrl())
+                    .handoverAreaPhotoUrl(req.getHandoverAreaPhotoUrl())
                     .isCompleted(completed)
                     .build();
             survey.getWasteVisits().add(newVisit);
@@ -385,6 +429,8 @@ public class SurveyService {
                                 .wetWastePhotoUrl(v.getWetWastePhotoUrl())
                                 .dryWastePhotoUrl(v.getDryWastePhotoUrl())
                                 .gardenWastePhotoUrl(v.getGardenWastePhotoUrl())
+                                .weighingScalePhotoUrl(v.getWeighingScalePhotoUrl())
+                                .handoverAreaPhotoUrl(v.getHandoverAreaPhotoUrl())
                                 .isCompleted(v.getIsCompleted())
                                 .build())
                         .sorted(Comparator.comparing(WasteVisitDto::getDayNumber))
@@ -414,6 +460,9 @@ public class SurveyService {
                 .premisesPhotoUrl(s.getPremisesPhotoUrl())
                 .premisesPhotoGeo(s.getPremisesPhotoGeo())
                 .premisesPhotoTime(s.getPremisesPhotoTime())
+                .signagePhotoUrl(s.getSignagePhotoUrl())
+                .signagePhotoGeo(s.getSignagePhotoGeo())
+                .signagePhotoTime(s.getSignagePhotoTime())
                 .gpsCoordinates(s.getGpsCoordinates())
                 .subCategoryType(s.getSubCategoryType())
                 .societyName(s.getSocietyName())
@@ -421,27 +470,43 @@ public class SurveyService {
                 .orgName(s.getOrgName())
                 .cinNumber(s.getCinNumber())
                 .tradeLicenseNo(s.getTradeLicenseNo())
+                .ptin(s.getPtin())
+                .gstin(s.getGstin())
                 .totalFloors(s.getTotalFloors())
                 .totalUnits(s.getTotalUnits())
                 .builtUpAreaSqM(s.getBuiltUpAreaSqM())
                 .buildingRemarks(s.getBuildingRemarks())
+                .buildingPermissionRefNo(s.getBuildingPermissionRefNo())
                 .buildingPermissionDocUrl(s.getBuildingPermissionDocUrl())
                 .buildingPermissionGeo(s.getBuildingPermissionGeo())
                 .buildingPermissionTime(s.getBuildingPermissionTime())
                 .waterConsumerNo(s.getWaterConsumerNo())
                 .dailyWaterConsumptionLiters(s.getDailyWaterConsumptionLiters())
+                .waterBillingPeriod(s.getWaterBillingPeriod())
+                .waterUnitsConsumed(s.getWaterUnitsConsumed())
                 .waterBillDocUrl(s.getWaterBillDocUrl())
                 .binInfrastructure(s.getBinInfrastructure())
                 .segregatedAtSource(s.getSegregatedAtSource())
                 .dryWasteChannelizedTo(s.getDryWasteChannelizedTo())
+                .overallDisposalMode(s.getOverallDisposalMode())
+                .vendorName(s.getVendorName())
+                .mouValidity(s.getMouValidity())
+                .processingDestination(s.getProcessingDestination())
+                .privateVendorDetails(s.getPrivateVendorDetails())
                 .hasBiogasPlant(s.getHasBiogasPlant())
+                .processingMethod(s.getProcessingMethod())
                 .biogasCapacity(s.getBiogasCapacity())
                 .biogasCapacityUnit(s.getBiogasCapacityUnit())
+                .spaceAvailableSqMeters(s.getSpaceAvailableSqMeters())
+                .byProductUsage(s.getByProductUsage())
                 .biogasOperationalStatus(s.getBiogasOperationalStatus())
                 .biogasPhotoUrl(s.getBiogasPhotoUrl())
                 .biogasRemarks(s.getBiogasRemarks())
+                .wasteGivenToOtherAgency(s.getWasteGivenToOtherAgency())
+                .agencyDocumentPhotoUrl(s.getAgencyDocumentPhotoUrl())
                 .geofenceLatitude(s.getGeofenceLatitude())
                 .geofenceLongitude(s.getGeofenceLongitude())
+                .geofenceRadiusMeters(s.getGeofenceRadiusMeters())
                 .geofencePhotoUrl(s.getGeofencePhotoUrl())
                 .eligibilityFloorArea(s.getEligibilityFloorArea())
                 .eligibilityWaterConsumption(s.getEligibilityWaterConsumption())

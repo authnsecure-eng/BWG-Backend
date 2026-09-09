@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
  * The actual Survey Officer created by an Admin under an Agency.
  */
 @Entity
-@Table(name = "users")
+@Table(name = "app_users")
 public class AppUser extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

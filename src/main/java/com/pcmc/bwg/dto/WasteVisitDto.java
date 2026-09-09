@@ -12,11 +12,13 @@ public class WasteVisitDto {
     private String wetWastePhotoUrl;
     private String dryWastePhotoUrl;
     private String gardenWastePhotoUrl;
+    private String weighingScalePhotoUrl;
+    private String handoverAreaPhotoUrl;
     private Boolean isCompleted;
 
     public WasteVisitDto() {}
 
-    public WasteVisitDto(Integer dayNumber, String visitDate, BigDecimal wetWasteKg, BigDecimal dryWasteKg, BigDecimal gardenWasteKg, BigDecimal totalWasteKg, String wetWastePhotoUrl, String dryWastePhotoUrl, String gardenWastePhotoUrl, Boolean isCompleted) {
+    public WasteVisitDto(Integer dayNumber, String visitDate, BigDecimal wetWasteKg, BigDecimal dryWasteKg, BigDecimal gardenWasteKg, BigDecimal totalWasteKg, String wetWastePhotoUrl, String dryWastePhotoUrl, String gardenWastePhotoUrl, String weighingScalePhotoUrl, String handoverAreaPhotoUrl, Boolean isCompleted) {
         this.dayNumber = dayNumber;
         this.visitDate = visitDate;
         this.wetWasteKg = wetWasteKg;
@@ -26,7 +28,13 @@ public class WasteVisitDto {
         this.wetWastePhotoUrl = wetWastePhotoUrl;
         this.dryWastePhotoUrl = dryWastePhotoUrl;
         this.gardenWastePhotoUrl = gardenWastePhotoUrl;
+        this.weighingScalePhotoUrl = weighingScalePhotoUrl;
+        this.handoverAreaPhotoUrl = handoverAreaPhotoUrl;
         this.isCompleted = isCompleted;
+    }
+
+    public WasteVisitDto(Integer dayNumber, String visitDate, BigDecimal wetWasteKg, BigDecimal dryWasteKg, BigDecimal gardenWasteKg, BigDecimal totalWasteKg, String wetWastePhotoUrl, String dryWastePhotoUrl, String gardenWastePhotoUrl, Boolean isCompleted) {
+        this(dayNumber, visitDate, wetWasteKg, dryWasteKg, gardenWasteKg, totalWasteKg, wetWastePhotoUrl, dryWastePhotoUrl, gardenWastePhotoUrl, null, null, isCompleted);
     }
 
     public Integer getDayNumber() { return dayNumber; }
@@ -56,6 +64,12 @@ public class WasteVisitDto {
     public String getGardenWastePhotoUrl() { return gardenWastePhotoUrl; }
     public void setGardenWastePhotoUrl(String gardenWastePhotoUrl) { this.gardenWastePhotoUrl = gardenWastePhotoUrl; }
 
+    public String getWeighingScalePhotoUrl() { return weighingScalePhotoUrl; }
+    public void setWeighingScalePhotoUrl(String weighingScalePhotoUrl) { this.weighingScalePhotoUrl = weighingScalePhotoUrl; }
+
+    public String getHandoverAreaPhotoUrl() { return handoverAreaPhotoUrl; }
+    public void setHandoverAreaPhotoUrl(String handoverAreaPhotoUrl) { this.handoverAreaPhotoUrl = handoverAreaPhotoUrl; }
+
     public Boolean getIsCompleted() { return isCompleted; }
     public void setIsCompleted(Boolean isCompleted) { this.isCompleted = isCompleted; }
 
@@ -71,6 +85,8 @@ public class WasteVisitDto {
         private String wetWastePhotoUrl;
         private String dryWastePhotoUrl;
         private String gardenWastePhotoUrl;
+        private String weighingScalePhotoUrl;
+        private String handoverAreaPhotoUrl;
         private Boolean isCompleted;
 
         public Builder dayNumber(Integer dayNumber) { this.dayNumber = dayNumber; return this; }
@@ -82,10 +98,12 @@ public class WasteVisitDto {
         public Builder wetWastePhotoUrl(String wetWastePhotoUrl) { this.wetWastePhotoUrl = wetWastePhotoUrl; return this; }
         public Builder dryWastePhotoUrl(String dryWastePhotoUrl) { this.dryWastePhotoUrl = dryWastePhotoUrl; return this; }
         public Builder gardenWastePhotoUrl(String gardenWastePhotoUrl) { this.gardenWastePhotoUrl = gardenWastePhotoUrl; return this; }
+        public Builder weighingScalePhotoUrl(String weighingScalePhotoUrl) { this.weighingScalePhotoUrl = weighingScalePhotoUrl; return this; }
+        public Builder handoverAreaPhotoUrl(String handoverAreaPhotoUrl) { this.handoverAreaPhotoUrl = handoverAreaPhotoUrl; return this; }
         public Builder isCompleted(Boolean isCompleted) { this.isCompleted = isCompleted; return this; }
 
         public WasteVisitDto build() {
-            return new WasteVisitDto(dayNumber, visitDate, wetWasteKg, dryWasteKg, gardenWasteKg, totalWasteKg, wetWastePhotoUrl, dryWastePhotoUrl, gardenWastePhotoUrl, isCompleted);
+            return new WasteVisitDto(dayNumber, visitDate, wetWasteKg, dryWasteKg, gardenWasteKg, totalWasteKg, wetWastePhotoUrl, dryWastePhotoUrl, gardenWastePhotoUrl, weighingScalePhotoUrl, handoverAreaPhotoUrl, isCompleted);
         }
     }
 }

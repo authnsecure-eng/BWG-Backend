@@ -66,6 +66,15 @@ public class Survey {
     @Column(name = "premises_photo_time", length = 100)
     private String premisesPhotoTime;
 
+    @Column(name = "signage_photo_url", length = 500)
+    private String signagePhotoUrl;
+
+    @Column(name = "signage_photo_geo", length = 255)
+    private String signagePhotoGeo;
+
+    @Column(name = "signage_photo_time", length = 100)
+    private String signagePhotoTime;
+
     @Column(name = "gps_coordinates", length = 255)
     private String gpsCoordinates;
 
@@ -87,6 +96,12 @@ public class Survey {
     @Column(name = "trade_license_no", length = 100)
     private String tradeLicenseNo;
 
+    @Column(name = "ptin", length = 100)
+    private String ptin;
+
+    @Column(name = "gstin", length = 100)
+    private String gstin;
+
     @Column(name = "total_floors", length = 20)
     private String totalFloors;
 
@@ -98,6 +113,9 @@ public class Survey {
 
     @Column(name = "building_remarks", columnDefinition = "TEXT")
     private String buildingRemarks;
+
+    @Column(name = "building_permission_ref_no", length = 100)
+    private String buildingPermissionRefNo;
 
     @Column(name = "building_permission_doc_url", nullable = false, length = 500)
     private String buildingPermissionDocUrl;
@@ -114,6 +132,12 @@ public class Survey {
     @Column(name = "daily_water_consumption_liters")
     private BigDecimal dailyWaterConsumptionLiters = BigDecimal.ZERO;
 
+    @Column(name = "water_billing_period", length = 100)
+    private String waterBillingPeriod;
+
+    @Column(name = "water_units_consumed", length = 100)
+    private String waterUnitsConsumed;
+
     @Column(name = "water_bill_doc_url", length = 500)
     private String waterBillDocUrl;
 
@@ -126,14 +150,38 @@ public class Survey {
     @Column(name = "dry_waste_channelized_to", length = 150)
     private String dryWasteChannelizedTo;
 
+    @Column(name = "overall_disposal_mode", length = 100)
+    private String overallDisposalMode;
+
+    @Column(name = "vendor_name")
+    private String vendorName;
+
+    @Column(name = "mou_validity", length = 100)
+    private String mouValidity;
+
+    @Column(name = "processing_destination")
+    private String processingDestination;
+
+    @Column(name = "private_vendor_details", length = 500)
+    private String privateVendorDetails;
+
     @Column(name = "has_biogas_plant")
     private Boolean hasBiogasPlant = false;
+
+    @Column(name = "processing_method", length = 100)
+    private String processingMethod;
 
     @Column(name = "biogas_capacity", length = 50)
     private String biogasCapacity;
 
     @Column(name = "biogas_capacity_unit", length = 50)
     private String biogasCapacityUnit;
+
+    @Column(name = "space_available_sq_meters", length = 50)
+    private String spaceAvailableSqMeters;
+
+    @Column(name = "by_product_usage")
+    private String byProductUsage;
 
     @Column(name = "biogas_operational_status", length = 50)
     private String biogasOperationalStatus;
@@ -144,11 +192,20 @@ public class Survey {
     @Column(name = "biogas_remarks", columnDefinition = "TEXT")
     private String biogasRemarks;
 
+    @Column(name = "waste_given_to_other_agency", length = 255)
+    private String wasteGivenToOtherAgency;
+
+    @Column(name = "agency_document_photo_url", length = 500)
+    private String agencyDocumentPhotoUrl;
+
     @Column(name = "geofence_latitude", length = 50)
     private String geofenceLatitude;
 
     @Column(name = "geofence_longitude", length = 50)
     private String geofenceLongitude;
+
+    @Column(name = "geofence_radius_meters", length = 50)
+    private String geofenceRadiusMeters;
 
     @Column(name = "geofence_photo_url", length = 500)
     private String geofencePhotoUrl;
@@ -364,6 +421,12 @@ public class Survey {
     public String getBiogasRemarks() { return biogasRemarks; }
     public void setBiogasRemarks(String biogasRemarks) { this.biogasRemarks = biogasRemarks; }
 
+    public String getWasteGivenToOtherAgency() { return wasteGivenToOtherAgency; }
+    public void setWasteGivenToOtherAgency(String wasteGivenToOtherAgency) { this.wasteGivenToOtherAgency = wasteGivenToOtherAgency; }
+
+    public String getAgencyDocumentPhotoUrl() { return agencyDocumentPhotoUrl; }
+    public void setAgencyDocumentPhotoUrl(String agencyDocumentPhotoUrl) { this.agencyDocumentPhotoUrl = agencyDocumentPhotoUrl; }
+
     public String getGeofenceLatitude() { return geofenceLatitude; }
     public void setGeofenceLatitude(String geofenceLatitude) { this.geofenceLatitude = geofenceLatitude; }
 
@@ -447,6 +510,57 @@ public class Survey {
 
     public List<SurveyWasteVisit> getWasteVisits() { return wasteVisits; }
     public void setWasteVisits(List<SurveyWasteVisit> wasteVisits) { this.wasteVisits = wasteVisits; }
+
+    public String getSignagePhotoUrl() { return signagePhotoUrl; }
+    public void setSignagePhotoUrl(String signagePhotoUrl) { this.signagePhotoUrl = signagePhotoUrl; }
+
+    public String getSignagePhotoGeo() { return signagePhotoGeo; }
+    public void setSignagePhotoGeo(String signagePhotoGeo) { this.signagePhotoGeo = signagePhotoGeo; }
+
+    public String getSignagePhotoTime() { return signagePhotoTime; }
+    public void setSignagePhotoTime(String signagePhotoTime) { this.signagePhotoTime = signagePhotoTime; }
+
+    public String getPtin() { return ptin; }
+    public void setPtin(String ptin) { this.ptin = ptin; }
+
+    public String getGstin() { return gstin; }
+    public void setGstin(String gstin) { this.gstin = gstin; }
+
+    public String getBuildingPermissionRefNo() { return buildingPermissionRefNo; }
+    public void setBuildingPermissionRefNo(String buildingPermissionRefNo) { this.buildingPermissionRefNo = buildingPermissionRefNo; }
+
+    public String getWaterBillingPeriod() { return waterBillingPeriod; }
+    public void setWaterBillingPeriod(String waterBillingPeriod) { this.waterBillingPeriod = waterBillingPeriod; }
+
+    public String getWaterUnitsConsumed() { return waterUnitsConsumed; }
+    public void setWaterUnitsConsumed(String waterUnitsConsumed) { this.waterUnitsConsumed = waterUnitsConsumed; }
+
+    public String getOverallDisposalMode() { return overallDisposalMode; }
+    public void setOverallDisposalMode(String overallDisposalMode) { this.overallDisposalMode = overallDisposalMode; }
+
+    public String getVendorName() { return vendorName; }
+    public void setVendorName(String vendorName) { this.vendorName = vendorName; }
+
+    public String getMouValidity() { return mouValidity; }
+    public void setMouValidity(String mouValidity) { this.mouValidity = mouValidity; }
+
+    public String getProcessingDestination() { return processingDestination; }
+    public void setProcessingDestination(String processingDestination) { this.processingDestination = processingDestination; }
+
+    public String getPrivateVendorDetails() { return privateVendorDetails; }
+    public void setPrivateVendorDetails(String privateVendorDetails) { this.privateVendorDetails = privateVendorDetails; }
+
+    public String getProcessingMethod() { return processingMethod; }
+    public void setProcessingMethod(String processingMethod) { this.processingMethod = processingMethod; }
+
+    public String getSpaceAvailableSqMeters() { return spaceAvailableSqMeters; }
+    public void setSpaceAvailableSqMeters(String spaceAvailableSqMeters) { this.spaceAvailableSqMeters = spaceAvailableSqMeters; }
+
+    public String getByProductUsage() { return byProductUsage; }
+    public void setByProductUsage(String byProductUsage) { this.byProductUsage = byProductUsage; }
+
+    public String getGeofenceRadiusMeters() { return geofenceRadiusMeters; }
+    public void setGeofenceRadiusMeters(String geofenceRadiusMeters) { this.geofenceRadiusMeters = geofenceRadiusMeters; }
 
     @PrePersist
     protected void onCreate() {
@@ -557,6 +671,8 @@ public class Survey {
         public Builder biogasOperationalStatus(String biogasOperationalStatus) { survey.setBiogasOperationalStatus(biogasOperationalStatus); return this; }
         public Builder biogasPhotoUrl(String biogasPhotoUrl) { survey.setBiogasPhotoUrl(biogasPhotoUrl); return this; }
         public Builder biogasRemarks(String biogasRemarks) { survey.setBiogasRemarks(biogasRemarks); return this; }
+        public Builder wasteGivenToOtherAgency(String wasteGivenToOtherAgency) { survey.setWasteGivenToOtherAgency(wasteGivenToOtherAgency); return this; }
+        public Builder agencyDocumentPhotoUrl(String agencyDocumentPhotoUrl) { survey.setAgencyDocumentPhotoUrl(agencyDocumentPhotoUrl); return this; }
         public Builder geofenceLatitude(String geofenceLatitude) { survey.setGeofenceLatitude(geofenceLatitude); return this; }
         public Builder geofenceLongitude(String geofenceLongitude) { survey.setGeofenceLongitude(geofenceLongitude); return this; }
         public Builder geofencePhotoUrl(String geofencePhotoUrl) { survey.setGeofencePhotoUrl(geofencePhotoUrl); return this; }
@@ -582,6 +698,23 @@ public class Survey {
         public Builder cpcbCompleted(Boolean cpcbCompleted) { survey.setCpcbCompleted(cpcbCompleted); return this; }
         public Builder cpcbAckNumber(String cpcbAckNumber) { survey.setCpcbAckNumber(cpcbAckNumber); return this; }
         public Builder cpcbSubmissionDate(String cpcbSubmissionDate) { survey.setCpcbSubmissionDate(cpcbSubmissionDate); return this; }
+        public Builder signagePhotoUrl(String signagePhotoUrl) { survey.setSignagePhotoUrl(signagePhotoUrl); return this; }
+        public Builder signagePhotoGeo(String signagePhotoGeo) { survey.setSignagePhotoGeo(signagePhotoGeo); return this; }
+        public Builder signagePhotoTime(String signagePhotoTime) { survey.setSignagePhotoTime(signagePhotoTime); return this; }
+        public Builder ptin(String ptin) { survey.setPtin(ptin); return this; }
+        public Builder gstin(String gstin) { survey.setGstin(gstin); return this; }
+        public Builder buildingPermissionRefNo(String buildingPermissionRefNo) { survey.setBuildingPermissionRefNo(buildingPermissionRefNo); return this; }
+        public Builder waterBillingPeriod(String waterBillingPeriod) { survey.setWaterBillingPeriod(waterBillingPeriod); return this; }
+        public Builder waterUnitsConsumed(String waterUnitsConsumed) { survey.setWaterUnitsConsumed(waterUnitsConsumed); return this; }
+        public Builder overallDisposalMode(String overallDisposalMode) { survey.setOverallDisposalMode(overallDisposalMode); return this; }
+        public Builder vendorName(String vendorName) { survey.setVendorName(vendorName); return this; }
+        public Builder mouValidity(String mouValidity) { survey.setMouValidity(mouValidity); return this; }
+        public Builder processingDestination(String processingDestination) { survey.setProcessingDestination(processingDestination); return this; }
+        public Builder privateVendorDetails(String privateVendorDetails) { survey.setPrivateVendorDetails(privateVendorDetails); return this; }
+        public Builder processingMethod(String processingMethod) { survey.setProcessingMethod(processingMethod); return this; }
+        public Builder spaceAvailableSqMeters(String spaceAvailableSqMeters) { survey.setSpaceAvailableSqMeters(spaceAvailableSqMeters); return this; }
+        public Builder byProductUsage(String byProductUsage) { survey.setByProductUsage(byProductUsage); return this; }
+        public Builder geofenceRadiusMeters(String geofenceRadiusMeters) { survey.setGeofenceRadiusMeters(geofenceRadiusMeters); return this; }
         public Builder createdAt(LocalDateTime createdAt) { survey.setCreatedAt(createdAt); return this; }
         public Builder updatedAt(LocalDateTime updatedAt) { survey.setUpdatedAt(updatedAt); return this; }
 

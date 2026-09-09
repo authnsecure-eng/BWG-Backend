@@ -15,6 +15,8 @@ public class WasteVisitUpdateRequest {
     private String wetWastePhotoUrl;
     private String dryWastePhotoUrl;
     private String gardenWastePhotoUrl;
+    private String weighingScalePhotoUrl;
+    private String handoverAreaPhotoUrl;
 
     public WasteVisitUpdateRequest() {}
 
@@ -41,4 +43,10 @@ public class WasteVisitUpdateRequest {
 
     public String getGardenWastePhotoUrl() { return gardenWastePhotoUrl; }
     public void setGardenWastePhotoUrl(String gardenWastePhotoUrl) { this.gardenWastePhotoUrl = gardenWastePhotoUrl; }
+
+    public String getWeighingScalePhotoUrl() { return weighingScalePhotoUrl; }
+    public void setWeighingScalePhotoUrl(String weighingScalePhotoUrl) { this.weighingScalePhotoUrl = weighingScalePhotoUrl; }
+
+    public String getHandoverAreaPhotoUrl() { return handoverAreaPhotoUrl; }
+    public void setHandoverAreaPhotoUrl(String handoverAreaPhotoUrl) { this.handoverAreaPhotoUrl = handoverAreaPhotoUrl; }
 }

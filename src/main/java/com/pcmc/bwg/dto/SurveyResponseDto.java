@@ -25,6 +25,9 @@ public class SurveyResponseDto {
     private String premisesPhotoUrl;
     private String premisesPhotoGeo;
     private String premisesPhotoTime;
+    private String signagePhotoUrl;
+    private String signagePhotoGeo;
+    private String signagePhotoTime;
     private String gpsCoordinates;
 
     private String subCategoryType;
@@ -33,33 +36,49 @@ public class SurveyResponseDto {
     private String orgName;
     private String cinNumber;
     private String tradeLicenseNo;
+    private String ptin;
+    private String gstin;
 
     private String totalFloors;
     private String totalUnits;
     private BigDecimal builtUpAreaSqM;
     private String buildingRemarks;
 
+    private String buildingPermissionRefNo;
     private String buildingPermissionDocUrl;
     private String buildingPermissionGeo;
     private String buildingPermissionTime;
 
     private String waterConsumerNo;
     private BigDecimal dailyWaterConsumptionLiters;
+    private String waterBillingPeriod;
+    private String waterUnitsConsumed;
     private String waterBillDocUrl;
 
     private String binInfrastructure;
     private String segregatedAtSource;
     private String dryWasteChannelizedTo;
+    private String overallDisposalMode;
+    private String vendorName;
+    private String mouValidity;
+    private String processingDestination;
+    private String privateVendorDetails;
 
     private Boolean hasBiogasPlant;
+    private String processingMethod;
     private String biogasCapacity;
     private String biogasCapacityUnit;
+    private String spaceAvailableSqMeters;
+    private String byProductUsage;
     private String biogasOperationalStatus;
     private String biogasPhotoUrl;
     private String biogasRemarks;
+    private String wasteGivenToOtherAgency;
+    private String agencyDocumentPhotoUrl;
 
     private String geofenceLatitude;
     private String geofenceLongitude;
+    private String geofenceRadiusMeters;
     private String geofencePhotoUrl;
 
     private Boolean eligibilityFloorArea;
@@ -231,6 +250,12 @@ public class SurveyResponseDto {
     public String getBiogasRemarks() { return biogasRemarks; }
     public void setBiogasRemarks(String biogasRemarks) { this.biogasRemarks = biogasRemarks; }
 
+    public String getWasteGivenToOtherAgency() { return wasteGivenToOtherAgency; }
+    public void setWasteGivenToOtherAgency(String wasteGivenToOtherAgency) { this.wasteGivenToOtherAgency = wasteGivenToOtherAgency; }
+
+    public String getAgencyDocumentPhotoUrl() { return agencyDocumentPhotoUrl; }
+    public void setAgencyDocumentPhotoUrl(String agencyDocumentPhotoUrl) { this.agencyDocumentPhotoUrl = agencyDocumentPhotoUrl; }
+
     public String getGeofenceLatitude() { return geofenceLatitude; }
     public void setGeofenceLatitude(String geofenceLatitude) { this.geofenceLatitude = geofenceLatitude; }
 
@@ -318,6 +343,57 @@ public class SurveyResponseDto {
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
+    public String getSignagePhotoUrl() { return signagePhotoUrl; }
+    public void setSignagePhotoUrl(String signagePhotoUrl) { this.signagePhotoUrl = signagePhotoUrl; }
+
+    public String getSignagePhotoGeo() { return signagePhotoGeo; }
+    public void setSignagePhotoGeo(String signagePhotoGeo) { this.signagePhotoGeo = signagePhotoGeo; }
+
+    public String getSignagePhotoTime() { return signagePhotoTime; }
+    public void setSignagePhotoTime(String signagePhotoTime) { this.signagePhotoTime = signagePhotoTime; }
+
+    public String getPtin() { return ptin; }
+    public void setPtin(String ptin) { this.ptin = ptin; }
+
+    public String getGstin() { return gstin; }
+    public void setGstin(String gstin) { this.gstin = gstin; }
+
+    public String getBuildingPermissionRefNo() { return buildingPermissionRefNo; }
+    public void setBuildingPermissionRefNo(String buildingPermissionRefNo) { this.buildingPermissionRefNo = buildingPermissionRefNo; }
+
+    public String getWaterBillingPeriod() { return waterBillingPeriod; }
+    public void setWaterBillingPeriod(String waterBillingPeriod) { this.waterBillingPeriod = waterBillingPeriod; }
+
+    public String getWaterUnitsConsumed() { return waterUnitsConsumed; }
+    public void setWaterUnitsConsumed(String waterUnitsConsumed) { this.waterUnitsConsumed = waterUnitsConsumed; }
+
+    public String getOverallDisposalMode() { return overallDisposalMode; }
+    public void setOverallDisposalMode(String overallDisposalMode) { this.overallDisposalMode = overallDisposalMode; }
+
+    public String getVendorName() { return vendorName; }
+    public void setVendorName(String vendorName) { this.vendorName = vendorName; }
+
+    public String getMouValidity() { return mouValidity; }
+    public void setMouValidity(String mouValidity) { this.mouValidity = mouValidity; }
+
+    public String getProcessingDestination() { return processingDestination; }
+    public void setProcessingDestination(String processingDestination) { this.processingDestination = processingDestination; }
+
+    public String getPrivateVendorDetails() { return privateVendorDetails; }
+    public void setPrivateVendorDetails(String privateVendorDetails) { this.privateVendorDetails = privateVendorDetails; }
+
+    public String getProcessingMethod() { return processingMethod; }
+    public void setProcessingMethod(String processingMethod) { this.processingMethod = processingMethod; }
+
+    public String getSpaceAvailableSqMeters() { return spaceAvailableSqMeters; }
+    public void setSpaceAvailableSqMeters(String spaceAvailableSqMeters) { this.spaceAvailableSqMeters = spaceAvailableSqMeters; }
+
+    public String getByProductUsage() { return byProductUsage; }
+    public void setByProductUsage(String byProductUsage) { this.byProductUsage = byProductUsage; }
+
+    public String getGeofenceRadiusMeters() { return geofenceRadiusMeters; }
+    public void setGeofenceRadiusMeters(String geofenceRadiusMeters) { this.geofenceRadiusMeters = geofenceRadiusMeters; }
+
     public static Builder builder() { return new Builder(); }
 
     public static class Builder {
@@ -368,6 +444,8 @@ public class SurveyResponseDto {
         public Builder biogasOperationalStatus(String biogasOperationalStatus) { dto.setBiogasOperationalStatus(biogasOperationalStatus); return this; }
         public Builder biogasPhotoUrl(String biogasPhotoUrl) { dto.setBiogasPhotoUrl(biogasPhotoUrl); return this; }
         public Builder biogasRemarks(String biogasRemarks) { dto.setBiogasRemarks(biogasRemarks); return this; }
+        public Builder wasteGivenToOtherAgency(String wasteGivenToOtherAgency) { dto.setWasteGivenToOtherAgency(wasteGivenToOtherAgency); return this; }
+        public Builder agencyDocumentPhotoUrl(String agencyDocumentPhotoUrl) { dto.setAgencyDocumentPhotoUrl(agencyDocumentPhotoUrl); return this; }
         public Builder geofenceLatitude(String geofenceLatitude) { dto.setGeofenceLatitude(geofenceLatitude); return this; }
         public Builder geofenceLongitude(String geofenceLongitude) { dto.setGeofenceLongitude(geofenceLongitude); return this; }
         public Builder geofencePhotoUrl(String geofencePhotoUrl) { dto.setGeofencePhotoUrl(geofencePhotoUrl); return this; }
@@ -393,6 +471,23 @@ public class SurveyResponseDto {
         public Builder cpcbCompleted(Boolean cpcbCompleted) { dto.setCpcbCompleted(cpcbCompleted); return this; }
         public Builder cpcbAckNumber(String cpcbAckNumber) { dto.setCpcbAckNumber(cpcbAckNumber); return this; }
         public Builder cpcbSubmissionDate(String cpcbSubmissionDate) { dto.setCpcbSubmissionDate(cpcbSubmissionDate); return this; }
+        public Builder signagePhotoUrl(String signagePhotoUrl) { dto.setSignagePhotoUrl(signagePhotoUrl); return this; }
+        public Builder signagePhotoGeo(String signagePhotoGeo) { dto.setSignagePhotoGeo(signagePhotoGeo); return this; }
+        public Builder signagePhotoTime(String signagePhotoTime) { dto.setSignagePhotoTime(signagePhotoTime); return this; }
+        public Builder ptin(String ptin) { dto.setPtin(ptin); return this; }
+        public Builder gstin(String gstin) { dto.setGstin(gstin); return this; }
+        public Builder buildingPermissionRefNo(String buildingPermissionRefNo) { dto.setBuildingPermissionRefNo(buildingPermissionRefNo); return this; }
+        public Builder waterBillingPeriod(String waterBillingPeriod) { dto.setWaterBillingPeriod(waterBillingPeriod); return this; }
+        public Builder waterUnitsConsumed(String waterUnitsConsumed) { dto.setWaterUnitsConsumed(waterUnitsConsumed); return this; }
+        public Builder overallDisposalMode(String overallDisposalMode) { dto.setOverallDisposalMode(overallDisposalMode); return this; }
+        public Builder vendorName(String vendorName) { dto.setVendorName(vendorName); return this; }
+        public Builder mouValidity(String mouValidity) { dto.setMouValidity(mouValidity); return this; }
+        public Builder processingDestination(String processingDestination) { dto.setProcessingDestination(processingDestination); return this; }
+        public Builder privateVendorDetails(String privateVendorDetails) { dto.setPrivateVendorDetails(privateVendorDetails); return this; }
+        public Builder processingMethod(String processingMethod) { dto.setProcessingMethod(processingMethod); return this; }
+        public Builder spaceAvailableSqMeters(String spaceAvailableSqMeters) { dto.setSpaceAvailableSqMeters(spaceAvailableSqMeters); return this; }
+        public Builder byProductUsage(String byProductUsage) { dto.setByProductUsage(byProductUsage); return this; }
+        public Builder geofenceRadiusMeters(String geofenceRadiusMeters) { dto.setGeofenceRadiusMeters(geofenceRadiusMeters); return this; }
         public Builder qrCodeDataBase64(String qrCodeDataBase64) { dto.setQrCodeDataBase64(qrCodeDataBase64); return this; }
         public Builder wasteVisits(List<WasteVisitDto> wasteVisits) { dto.setWasteVisits(wasteVisits); return this; }
         public Builder createdAt(LocalDateTime createdAt) { dto.setCreatedAt(createdAt); return this; }

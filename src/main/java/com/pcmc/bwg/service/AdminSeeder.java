@@ -7,9 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(1)
 public class AdminSeeder implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(AdminSeeder.class);
@@ -27,20 +29,24 @@ public class AdminSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (!adminSeedProperties.isEnabled()) {
-            return;
-        }
-        if (adminRepository.existsByUsername(adminSeedProperties.getUsername())) {
-            return;
-        }
+        try {
+            if (!adminSeedProperties.isEnabled()) {
+                return;
+            }
+            if (adminRepository.existsByUsername(adminSeedProperties.getUsername())) {
+                return;
+            }
 
-        Admin admin = new Admin();
-        admin.setUsername(adminSeedProperties.getUsername());
-        admin.setPasswordHash(passwordEncoder.encode(adminSeedProperties.getPassword()));
-        admin.setFullName("Super Admin");
-        admin.setActive(true);
-        adminRepository.save(admin);
+            Admin admin = new Admin();
+            admin.setUsername(adminSeedProperties.getUsername());
+            admin.setPasswordHash(passwordEncoder.encode(adminSeedProperties.getPassword()));
+            admin.setFullName("Super Admin");
+            admin.setActive(true);
+            adminRepository.save(admin);
 
-        log.info("Seeded default admin user '{}'", adminSeedProperties.getUsername());
+            log.info("Seeded default admin user '{}'", adminSeedProperties.getUsername());
+        } catch (Exception e) {
+            log.error("Failed to seed default admin user: {}", e.getMessage(), e);
+        }
     }
 }
