@@ -1,7 +1,11 @@
 package com.pcmc.bwg.service;
 
 import com.pcmc.bwg.dto.DropdownOptionDto;
+import com.pcmc.bwg.entity.AdminAdministrativeWard;
+import com.pcmc.bwg.entity.AdminZone;
 import com.pcmc.bwg.entity.DropdownOption;
+import com.pcmc.bwg.repository.AdminAdministrativeWardRepository;
+import com.pcmc.bwg.repository.AdminZoneRepository;
 import com.pcmc.bwg.repository.DropdownRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,14 +16,38 @@ import java.util.stream.Collectors;
 @Service
 public class DropdownService {
 
-    private final DropdownRepository dropdownRepository;
+    private static final String STATUS_ACTIVE = "ACTIVE";
 
-    public DropdownService(DropdownRepository dropdownRepository) {
+    private final DropdownRepository dropdownRepository;
+    private final AdminZoneRepository adminZoneRepository;
+    private final AdminAdministrativeWardRepository adminWardRepository;
+
+    public DropdownService(DropdownRepository dropdownRepository,
+                            AdminZoneRepository adminZoneRepository,
+                            AdminAdministrativeWardRepository adminWardRepository) {
         this.dropdownRepository = dropdownRepository;
+        this.adminZoneRepository = adminZoneRepository;
+        this.adminWardRepository = adminWardRepository;
     }
 
+    /**
+     * ZONE and WARD read live from the admin backend's Zone/Administrative
+     * Ward masters (same database, see AdminZone/AdminAdministrativeWard)
+     * instead of the static dropdown_options table, so an admin adding or
+     * renaming a zone/ward is immediately visible here with no seed/sync
+     * step. Every other group (category, bin infrastructure, etc.) is
+     * fixed CPCB-survey-form vocabulary that has no admin-master
+     * equivalent, so it stays on the static seeded table.
+     */
     @Transactional(readOnly = true)
     public List<DropdownOptionDto> getDropdownOptions(String group, String parentValue) {
+        if ("ZONE".equalsIgnoreCase(group)) {
+            return liveZoneOptions();
+        }
+        if ("WARD".equalsIgnoreCase(group)) {
+            return liveWardOptions(parentValue);
+        }
+
         List<DropdownOption> list;
         if (parentValue != null && !parentValue.isBlank()) {
             list = dropdownRepository.findByCategoryGroupAndParentValueAndActiveTrueOrderBySortOrderAsc(group, parentValue);
@@ -33,6 +61,38 @@ public class DropdownService {
                         .value(opt.getOptionValue())
                         .group(opt.getCategoryGroup())
                         .parentValue(opt.getParentValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<DropdownOptionDto> liveZoneOptions() {
+        return adminZoneRepository.findByStatusOrderByNameAsc(STATUS_ACTIVE).stream()
+                .map(z -> DropdownOptionDto.builder()
+                        .label(z.getName())
+                        .value(z.getName())
+                        .group("ZONE")
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<DropdownOptionDto> liveWardOptions(String zoneName) {
+        List<AdminAdministrativeWard> wards;
+        if (zoneName != null && !zoneName.isBlank()) {
+            Optional<AdminZone> zone = adminZoneRepository.findByNameIgnoreCaseAndStatus(zoneName.trim(), STATUS_ACTIVE);
+            if (zone.isEmpty()) {
+                return List.of();
+            }
+            wards = adminWardRepository.findByParentIdAndStatusOrderByNameAsc(zone.get().getId(), STATUS_ACTIVE);
+        } else {
+            wards = adminWardRepository.findByStatusOrderByNameAsc(STATUS_ACTIVE);
+        }
+
+        return wards.stream()
+                .map(w -> DropdownOptionDto.builder()
+                        .label(w.getName())
+                        .value(w.getName())
+                        .group("WARD")
+                        .parentValue(zoneName)
                         .build())
                 .collect(Collectors.toList());
     }
@@ -54,6 +114,9 @@ public class DropdownService {
                 result.computeIfAbsent(opt.getCategoryGroup(), k -> new ArrayList<>()).add(dto);
             }
         }
+
+        result.put("ZONE", liveZoneOptions());
+        result.put("WARD", liveWardOptions(null));
 
         return result;
     }

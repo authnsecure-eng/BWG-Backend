@@ -19,13 +19,16 @@ public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final SurveyWasteVisitRepository wasteVisitRepository;
     private final QRCodeService qrCodeService;
+    private final AdminBridgeClient adminBridgeClient;
 
     public SurveyService(SurveyRepository surveyRepository,
                          SurveyWasteVisitRepository wasteVisitRepository,
-                         QRCodeService qrCodeService) {
+                         QRCodeService qrCodeService,
+                         AdminBridgeClient adminBridgeClient) {
         this.surveyRepository = surveyRepository;
         this.wasteVisitRepository = wasteVisitRepository;
         this.qrCodeService = qrCodeService;
+        this.adminBridgeClient = adminBridgeClient;
     }
 
     @Transactional
@@ -243,6 +246,7 @@ public class SurveyService {
         survey.recalculateAverages();
 
         Survey saved = surveyRepository.save(survey);
+        adminBridgeClient.push(saved);
         return mapToDto(saved);
     }
 
@@ -362,6 +366,7 @@ public class SurveyService {
 
         survey.recalculateAverages();
         Survey saved = surveyRepository.save(survey);
+        adminBridgeClient.push(saved);
         return mapToDto(saved);
     }
 
@@ -375,6 +380,7 @@ public class SurveyService {
         if (req.getSubmissionDate() != null) survey.setCpcbSubmissionDate(req.getSubmissionDate());
 
         Survey saved = surveyRepository.save(survey);
+        adminBridgeClient.push(saved);
         return mapToDto(saved);
     }
 

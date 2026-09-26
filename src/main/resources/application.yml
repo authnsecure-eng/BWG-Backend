@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8090}
+  port: ${SERVER_PORT:8091}
 
 spring:
   application:
@@ -10,7 +10,7 @@ spring:
   datasource:
     url: ${BWG_DB_URL:jdbc:postgresql://localhost:5432/pcmc_bwg}
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:Yadav@0607}
+    password: ${DB_PASSWORD:root}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -27,6 +27,20 @@ spring:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
+    # This app shares its Postgres database with the admin backend
+    # (BWG.git), which runs its own independent Flyway migrations against
+    # the same schema. Both projects' migration files happen to reuse the
+    # same version numbers (V1, V2, V3...) for unrelated changes, so
+    # without a table name of its own, this app was reading the admin
+    # backend's history, believing versions 1-5 were already applied (or
+    # failing checksum validation), and its own schema/seed migrations -
+    # notably V2's dropdown_options seed data - never actually ran.
+    # A dedicated table isolates this app's migration bookkeeping so
+    # baseline-on-migrate can correctly recognize the already-created
+    # tables (created previously under this same broken tracking) and
+    # baseline them, rather than either re-running or silently skipping.
+    table: flyway_schema_history_mobile
+    baseline-version: 5
 
   servlet:
     multipart:
@@ -53,6 +67,20 @@ app:
   file-storage:
     upload-dir: ${FILE_UPLOAD_DIR:uploads/photos}
     base-url: ${FILE_BASE_URL:/files/photos}
+
+  admin-bridge:
+    # Pushes every survey create/update to the admin backend (BWG.git)
+    # so it appears in the Admin > Reports screen. Enabled by default -
+    # requires the admin backend's /api/internal/surveys/ingest to be
+    # deployed and reachable at base-url below, with the same api-key set
+    # on both sides (app.internal-bridge.api-key there). Set
+    # ADMIN_BRIDGE_ENABLED=false to turn off if the admin backend isn't
+    # deployed yet.
+    enabled: ${ADMIN_BRIDGE_ENABLED:true}
+    base-url: ${ADMIN_BRIDGE_BASE_URL:http://localhost:8090}
+    api-key: ${ADMIN_BRIDGE_API_KEY:pcmc-bwg-local-dev-bridge-key-2026}
+    connect-timeout-ms: ${ADMIN_BRIDGE_CONNECT_TIMEOUT_MS:5000}
+    read-timeout-ms: ${ADMIN_BRIDGE_READ_TIMEOUT_MS:5000}
 
   admin-seed:
     username: ${ADMIN_SEED_USERNAME:admin}
