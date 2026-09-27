@@ -13,9 +13,17 @@ import jakarta.persistence.Table;
 
 /**
  * The actual Survey Officer created by an Admin under an Agency.
+ *
+ * Maps to the "users" table - the same one the admin backend's own
+ * AppUser entity writes to when an admin adds a user under
+ * Users & Agencies. This app previously mapped to a separate "app_users"
+ * table that was never reachable from admin, so an admin-created officer
+ * could never log into the mobile app with those credentials; the two
+ * tables have identical schemas (this entity started as a copy of the
+ * admin one), so re-pointing here is a same-database, no-migration fix.
  */
 @Entity
-@Table(name = "app_users")
+@Table(name = "users")
 public class AppUser extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
