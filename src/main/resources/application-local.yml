@@ -4,7 +4,7 @@
 # ===================================================================
 spring:
   datasource:
-    password: ${DB_PASSWORD:Yadav@0607}
+    password: ${DB_PASSWORD:root}
 
 app:
   admin-seed:
