@@ -5,3 +5,9 @@
 spring:
   datasource:
     password: ${DB_PASSWORD:Yadav@0607}
+
+app:
+  admin-seed:
+    enabled: ${ADMIN_SEED_ENABLED:true}
+  user-seed:
+    enabled: ${USER_SEED_ENABLED:true}

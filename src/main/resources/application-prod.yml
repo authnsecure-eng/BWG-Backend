@@ -7,3 +7,9 @@ spring:
     url: ${BWG_DB_URL:jdbc:postgresql://localhost:5432/pcmc_bwg}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:root123}
+
+app:
+  admin-seed:
+    enabled: false
+  user-seed:
+    enabled: false
