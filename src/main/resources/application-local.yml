@@ -4,14 +4,10 @@
 # ===================================================================
 spring:
   datasource:
-    password: ${DB_PASSWORD:root}
+    password: ${DB_PASSWORD:Yadav@0607}
 
-  # The flyway.table/baseline-version override in application.yml now
-  # gives this app its own migration-tracking table, isolated from the
-  # admin backend's (both share this Postgres database but run
-  # independent, colliding-version-numbered migrations). That was the
-  # actual reason Flyway believed this app's schema was in a drifted
-  # state; with tracking isolated, standard Flyway validation and plain
-  # Hibernate "validate" (inherited from application.yml) are correct
-  # here again, so the validate-on-migrate:false / ddl-auto:update
-  # workaround that used to live in this file has been removed.
+app:
+  admin-seed:
+    enabled: ${ADMIN_SEED_ENABLED:true}
+  user-seed:
+    enabled: ${USER_SEED_ENABLED:true}

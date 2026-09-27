@@ -85,7 +85,10 @@ app:
   admin-seed:
     username: ${ADMIN_SEED_USERNAME:admin}
     password: ${ADMIN_SEED_PASSWORD:Admin@12345}
-    enabled: ${ADMIN_SEED_ENABLED:true}
+    enabled: ${ADMIN_SEED_ENABLED:false}
+
+  user-seed:
+    enabled: ${USER_SEED_ENABLED:false}
 
 logging:
   level:

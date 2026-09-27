@@ -99,29 +99,11 @@ public class AuthService {
             return loginUser(cleanId, password);
         }
 
-        // 3. Check for inspector demo / field officer shortcut credentials
-        if (cleanId.toUpperCase().contains("SI") || "inspector".equalsIgnoreCase(role) || "Rajesh Patil".equalsIgnoreCase(cleanId)) {
-            if ("pcmc@2026".equals(password) || "admin123".equals(password) || "password".equals(password)) {
-                String token = jwtService.generateToken("1", Map.of("role", "SURVEY_OFFICER", "identifier", cleanId));
-                return new LoginResponse(token, jwtService.getExpirationMinutes(), 1L, "Rajesh Patil", "SURVEY_OFFICER");
-            }
-        }
-
-        // 4. Check for applicant / society credentials
-        if (cleanId.toUpperCase().startsWith("CHS") || cleanId.toUpperCase().startsWith("COMM") || "applicant".equalsIgnoreCase(role)) {
-            if ("society@2026".equals(password) || "comm@2026".equals(password) || "pcmc@2026".equals(password) || "admin123".equals(password)) {
-                String orgName = cleanId.toUpperCase().startsWith("CHS") ? "Amrut CHS Admin" : "Commercial BWG Admin";
-                String token = jwtService.generateToken("99", Map.of("role", "BWG_REPRESENTATIVE", "identifier", cleanId));
-                return new LoginResponse(token, jwtService.getExpirationMinutes(), 99L, orgName, "BWG_REPRESENTATIVE");
-            }
-        }
-
         throw new UnauthorizedException("Invalid credentials. Please check your User ID / Mobile and password.");
     }
 
     private boolean verifyPassword(String rawPassword, String storedPassword) {
         if (rawPassword == null || storedPassword == null) return false;
-        if (rawPassword.equals(storedPassword)) return true;
         try {
             return passwordEncoder.matches(rawPassword, storedPassword);
         } catch (Exception e) {

@@ -18,7 +18,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 @Component
 @Order(2)
-@ConditionalOnProperty(name = "app.user-seed.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "app.user-seed.enabled", havingValue = "true")
 public class UserSeeder implements CommandLineRunner {
 
     private static final Logger log = LoggerFactory.getLogger(UserSeeder.class);
