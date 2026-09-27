@@ -3,17 +3,21 @@ package com.pcmc.bwg.service;
 import com.pcmc.bwg.config.AdminBridgeProperties;
 import com.pcmc.bwg.entity.Survey;
 import com.pcmc.bwg.entity.SurveyWasteVisit;
+import com.pcmc.bwg.repository.SurveyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,10 +26,14 @@ import java.util.Map;
 /**
  * Pushes a Survey to the admin backend's /api/internal/surveys/ingest so it
  * appears in the Admin "Reports" screen (see SurveyIngestController /
- * SurveyIngestService there). Deliberately best-effort: a citizen/officer
- * submitting a survey must never fail or hang because the admin backend is
- * slow or unreachable, so every failure here is caught and logged, never
- * rethrown.
+ * SurveyIngestService there). Deliberately best-effort on each individual
+ * call: a citizen/officer submitting a survey must never fail or hang
+ * because the admin backend is slow or unreachable, so every failure here
+ * is caught and logged, never rethrown. Reliability instead comes from
+ * adminSyncedAt on Survey: it's only set once a push actually succeeds, and
+ * retryUnsynced() below re-attempts every survey still null there on a
+ * schedule, so a transient admin-backend outage no longer means a survey is
+ * silently never sent again.
  *
  * Known gap (documented, not silently worked around): Survey has no
  * authenticated-officer foreign key today, only the free-text
@@ -41,13 +49,16 @@ public class AdminBridgeClient {
 
     private final AdminBridgeProperties properties;
     private final RestTemplate restTemplate;
+    private final SurveyRepository surveyRepository;
 
-    public AdminBridgeClient(AdminBridgeProperties properties, RestTemplateBuilder restTemplateBuilder) {
+    public AdminBridgeClient(AdminBridgeProperties properties, RestTemplateBuilder restTemplateBuilder,
+                              SurveyRepository surveyRepository) {
         this.properties = properties;
         this.restTemplate = restTemplateBuilder
                 .setConnectTimeout(Duration.ofMillis(properties.getConnectTimeoutMs()))
                 .setReadTimeout(Duration.ofMillis(properties.getReadTimeoutMs()))
                 .build();
+        this.surveyRepository = surveyRepository;
     }
 
     /** Fire-and-forget: logs and swallows every failure, never throws. */
@@ -67,11 +78,41 @@ public class AdminBridgeClient {
             String url = properties.getBaseUrl() + "/api/internal/surveys/ingest";
             restTemplate.postForEntity(url, new HttpEntity<>(payload, headers), Map.class);
             log.info("Pushed survey {} to admin backend", survey.getId());
+            markSynced(survey);
         } catch (RestClientException ex) {
             log.error("Failed to push survey {} to admin backend at {}: {}",
                     survey.getId(), properties.getBaseUrl(), ex.getMessage());
         } catch (Exception ex) {
             log.error("Unexpected error pushing survey {} to admin backend", survey.getId(), ex);
+        }
+    }
+
+    private void markSynced(Survey survey) {
+        survey.setAdminSyncedAt(LocalDateTime.now());
+        surveyRepository.save(survey);
+    }
+
+    /**
+     * Re-pushes every survey whose last push never succeeded (adminSyncedAt
+     * still null) - covers admin-backend downtime/network blips at the
+     * original create/update time, and also the historical gap before this
+     * bridge existed at all. Runs every 5 minutes; each survey is still
+     * independently best-effort via push(), so one still-unreachable admin
+     * backend just means this batch tries again next tick.
+     */
+    @Scheduled(fixedDelayString = "PT5M", initialDelayString = "PT1M")
+    @Transactional
+    public void retryUnsynced() {
+        if (!properties.isEnabled()) {
+            return;
+        }
+        List<Survey> pending = surveyRepository.findByAdminSyncedAtIsNull();
+        if (pending.isEmpty()) {
+            return;
+        }
+        log.info("Retrying admin push for {} unsynced survey(s)", pending.size());
+        for (Survey survey : pending) {
+            push(survey);
         }
     }
 

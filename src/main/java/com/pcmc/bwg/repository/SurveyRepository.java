@@ -37,4 +37,7 @@ public interface SurveyRepository extends JpaRepository<Survey, String>, JpaSpec
             @Param("zone") String zone,
             @Param("ward") String ward
     );
+
+    /** Surveys AdminBridgeClient has never successfully pushed yet - retried on a schedule. */
+    List<Survey> findByAdminSyncedAtIsNull();
 }

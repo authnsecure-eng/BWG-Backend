@@ -282,6 +282,11 @@ public class Survey {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
+    /** Null until AdminBridgeClient successfully pushes this survey to the
+     *  admin backend; a scheduled job retries every survey still null here. */
+    @Column(name = "admin_synced_at")
+    private LocalDateTime adminSyncedAt;
+
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<SurveyWasteVisit> wasteVisits = new ArrayList<>();
@@ -507,6 +512,9 @@ public class Survey {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public LocalDateTime getAdminSyncedAt() { return adminSyncedAt; }
+    public void setAdminSyncedAt(LocalDateTime adminSyncedAt) { this.adminSyncedAt = adminSyncedAt; }
 
     public List<SurveyWasteVisit> getWasteVisits() { return wasteVisits; }
     public void setWasteVisits(List<SurveyWasteVisit> wasteVisits) { this.wasteVisits = wasteVisits; }
