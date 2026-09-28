@@ -2,13 +2,18 @@
 # Production Profile Configuration
 # Activated with: --spring.profiles.active=prod or SPRING_PROFILES_ACTIVE=prod
 # ===================================================================
+server:
+  port: ${SERVER_PORT:8091}
+
 spring:
   datasource:
     url: ${BWG_DB_URL:jdbc:postgresql://localhost:5432/pcmc_bwg}
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:root123}
+    password: ${DB_PASSWORD}
 
 app:
+  jwt:
+    secret: ${JWT_SECRET}
   admin-seed:
     enabled: false
   user-seed:
