@@ -12,6 +12,7 @@ import java.util.List;
 public interface SurveyRepository extends JpaRepository<Survey, String>, JpaSpecificationExecutor<Survey> {
 
     @Query("SELECT s FROM Survey s WHERE " +
+           "(:isAdmin = true OR s.createdByUserId = :userId) AND " +
            "(:category IS NULL OR :category = '' OR LOWER(s.category) = LOWER(:category)) AND " +
            "(:status IS NULL OR :status = '' OR LOWER(s.status) = LOWER(:status)) AND " +
            "(:zone IS NULL OR :zone = '' OR :zone = 'All Zones' OR LOWER(s.zone) = LOWER(:zone)) AND " +
@@ -23,10 +24,13 @@ public interface SurveyRepository extends JpaRepository<Survey, String>, JpaSpec
             @Param("status") String status,
             @Param("zone") String zone,
             @Param("ward") String ward,
-            @Param("search") String search
+            @Param("search") String search,
+            @Param("userId") Long userId,
+            @Param("isAdmin") boolean isAdmin
     );
 
     @Query("SELECT COUNT(s) FROM Survey s WHERE " +
+           "(:isAdmin = true OR s.createdByUserId = :userId) AND " +
            "(:category IS NULL OR :category = '' OR LOWER(s.category) = LOWER(:category)) AND " +
            "(:status IS NULL OR :status = '' OR LOWER(s.status) = LOWER(:status)) AND " +
            "(:zone IS NULL OR :zone = '' OR :zone = 'All Zones' OR LOWER(s.zone) = LOWER(:zone)) AND " +
@@ -35,7 +39,9 @@ public interface SurveyRepository extends JpaRepository<Survey, String>, JpaSpec
             @Param("category") String category,
             @Param("status") String status,
             @Param("zone") String zone,
-            @Param("ward") String ward
+            @Param("ward") String ward,
+            @Param("userId") Long userId,
+            @Param("isAdmin") boolean isAdmin
     );
 
     /** Surveys AdminBridgeClient has never successfully pushed yet - retried on a schedule. */

@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/otp/**").permitAll()
                         .requestMatchers("/api/onboarding/**").permitAll()
                         .requestMatchers("/api/v1/dropdowns/**", "/api/dropdowns/**").permitAll()
-                        .requestMatchers("/api/v1/surveys/**", "/api/surveys/**").permitAll()
+                        .requestMatchers("/api/v1/surveys/**", "/api/surveys/**").authenticated()
                         .requestMatchers(filesPattern).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

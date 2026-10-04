@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +24,9 @@ public class SurveyController {
     }
 
     @PostMapping
-    public ResponseEntity<SurveyResponseDto> createSurvey(@Valid @RequestBody SurveyCreateRequest request) {
-        SurveyResponseDto response = surveyService.createSurvey(request);
+    public ResponseEntity<SurveyResponseDto> createSurvey(@Valid @RequestBody SurveyCreateRequest request,
+                                                           Authentication authentication) {
+        SurveyResponseDto response = surveyService.createSurvey(request, userId(authentication), isAdmin(authentication));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -34,8 +36,10 @@ public class SurveyController {
             @RequestParam(value = "status", required = false) String status,
             @RequestParam(value = "zone", required = false) String zone,
             @RequestParam(value = "ward", required = false) String ward,
-            @RequestParam(value = "search", required = false) String search) {
-        List<SurveyResponseDto> surveys = surveyService.getSurveys(category, status, zone, ward, search);
+            @RequestParam(value = "search", required = false) String search,
+            Authentication authentication) {
+        List<SurveyResponseDto> surveys = surveyService.getSurveys(category, status, zone, ward, search,
+                userId(authentication), isAdmin(authentication));
         return ResponseEntity.ok(surveys);
     }
 
@@ -44,42 +48,49 @@ public class SurveyController {
             @RequestParam(value = "year", required = false) String year,
             @RequestParam(value = "month", required = false) String month,
             @RequestParam(value = "zone", required = false) String zone,
-            @RequestParam(value = "ward", required = false) String ward) {
-        DashboardStatsDto stats = surveyService.getDashboardStats(year, month, zone, ward);
+            @RequestParam(value = "ward", required = false) String ward,
+            Authentication authentication) {
+        DashboardStatsDto stats = surveyService.getDashboardStats(year, month, zone, ward,
+                userId(authentication), isAdmin(authentication));
         return ResponseEntity.ok(stats);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SurveyResponseDto> getSurveyById(@PathVariable("id") String id) {
-        SurveyResponseDto survey = surveyService.getSurveyById(id);
+    public ResponseEntity<SurveyResponseDto> getSurveyById(@PathVariable("id") String id,
+                                                            Authentication authentication) {
+        SurveyResponseDto survey = surveyService.getSurveyById(id, userId(authentication), isAdmin(authentication));
         return ResponseEntity.ok(survey);
     }
 
     @PutMapping("/{id}/waste-visit")
     public ResponseEntity<SurveyResponseDto> updateWasteVisit(
             @PathVariable("id") String id,
-            @Valid @RequestBody WasteVisitUpdateRequest request) {
-        SurveyResponseDto updated = surveyService.updateWasteVisit(id, request);
+            @Valid @RequestBody WasteVisitUpdateRequest request,
+            Authentication authentication) {
+        SurveyResponseDto updated = surveyService.updateWasteVisit(id, request, userId(authentication), isAdmin(authentication));
         return ResponseEntity.ok(updated);
     }
 
     @PatchMapping("/{id}/cpcb")
     public ResponseEntity<SurveyResponseDto> updateCpcb(
             @PathVariable("id") String id,
-            @RequestBody CPCBUpdateRequest request) {
-        SurveyResponseDto updated = surveyService.updateCpcb(id, request);
+            @RequestBody CPCBUpdateRequest request,
+            Authentication authentication) {
+        SurveyResponseDto updated = surveyService.updateCpcb(id, request, userId(authentication), isAdmin(authentication));
         return ResponseEntity.ok(updated);
     }
 
     @GetMapping("/{id}/qr")
-    public ResponseEntity<QRCodeResponseDto> getQrCode(@PathVariable("id") String id) {
-        QRCodeResponseDto qrCode = surveyService.getQrCode(id);
+    public ResponseEntity<QRCodeResponseDto> getQrCode(@PathVariable("id") String id,
+                                                        Authentication authentication) {
+        QRCodeResponseDto qrCode = surveyService.getQrCode(id, userId(authentication), isAdmin(authentication));
         return ResponseEntity.ok(qrCode);
     }
 
     @GetMapping(value = "/{id}/qr/download", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> downloadQrCode(@PathVariable("id") String id) {
-        byte[] pngBytes = surveyService.getQrCodePngBytes(id);
+    public ResponseEntity<byte[]> downloadQrCode(@PathVariable("id") String id,
+                                                  Authentication authentication) {
+        byte[] pngBytes = surveyService.getQrCodePngBytes(id, userId(authentication), isAdmin(authentication));
         if (pngBytes == null) {
             return ResponseEntity.notFound().build();
         }
@@ -87,5 +98,18 @@ public class SurveyController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"PCMC-QR-" + id + ".png\"")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.IMAGE_PNG_VALUE)
                 .body(pngBytes);
+    }
+
+    private boolean isAdmin(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(authority -> "ROLE_ADMIN".equals(authority.getAuthority()));
+    }
+
+    private Long userId(Authentication authentication) {
+        try {
+            return Long.valueOf(authentication.getName());
+        } catch (NumberFormatException ex) {
+            throw new IllegalStateException("Authenticated account has an invalid identifier", ex);
+        }
     }
 }

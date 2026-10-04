@@ -276,6 +276,9 @@ public class Survey {
     @Column(name = "cpcb_submission_date", length = 50)
     private String cpcbSubmissionDate;
 
+    @Column(name = "created_by_user_id", updatable = false)
+    private Long createdByUserId;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -507,6 +510,9 @@ public class Survey {
     public String getCpcbSubmissionDate() { return cpcbSubmissionDate; }
     public void setCpcbSubmissionDate(String cpcbSubmissionDate) { this.cpcbSubmissionDate = cpcbSubmissionDate; }
 
+    public Long getCreatedByUserId() { return createdByUserId; }
+    public void setCreatedByUserId(Long createdByUserId) { this.createdByUserId = createdByUserId; }
+
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
@@ -706,6 +712,7 @@ public class Survey {
         public Builder cpcbCompleted(Boolean cpcbCompleted) { survey.setCpcbCompleted(cpcbCompleted); return this; }
         public Builder cpcbAckNumber(String cpcbAckNumber) { survey.setCpcbAckNumber(cpcbAckNumber); return this; }
         public Builder cpcbSubmissionDate(String cpcbSubmissionDate) { survey.setCpcbSubmissionDate(cpcbSubmissionDate); return this; }
+        public Builder createdByUserId(Long createdByUserId) { survey.setCreatedByUserId(createdByUserId); return this; }
         public Builder signagePhotoUrl(String signagePhotoUrl) { survey.setSignagePhotoUrl(signagePhotoUrl); return this; }
         public Builder signagePhotoGeo(String signagePhotoGeo) { survey.setSignagePhotoGeo(signagePhotoGeo); return this; }
         public Builder signagePhotoTime(String signagePhotoTime) { survey.setSignagePhotoTime(signagePhotoTime); return this; }

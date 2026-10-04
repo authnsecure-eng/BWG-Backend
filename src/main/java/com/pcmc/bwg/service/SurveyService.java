@@ -7,6 +7,7 @@ import com.pcmc.bwg.repository.SurveyRepository;
 import com.pcmc.bwg.repository.SurveyWasteVisitRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ public class SurveyService {
     }
 
     @Transactional
-    public SurveyResponseDto createSurvey(SurveyCreateRequest req) {
+    public SurveyResponseDto createSurvey(SurveyCreateRequest req, Long userId, boolean isAdmin) {
         String surveyId = req.getId();
         if (surveyId == null || surveyId.trim().isEmpty()) {
             int randomNum = 10000 + new Random().nextInt(90000);
@@ -48,6 +49,7 @@ public class SurveyService {
 
         if (existingOpt.isPresent()) {
             survey = existingOpt.get();
+            requireAccess(survey, userId, isAdmin);
             if (req.getCategory() != null) survey.setCategory(req.getCategory().toLowerCase());
             if (req.getEstablishmentName() != null) survey.setEstablishmentName(req.getEstablishmentName());
             if (req.getZone() != null) survey.setZone(req.getZone());
@@ -210,6 +212,7 @@ public class SurveyService {
                     .cpcbCompleted(req.getCpcbCompleted() != null ? req.getCpcbCompleted() : false)
                     .cpcbAckNumber(req.getCpcbAckNumber())
                     .cpcbSubmissionDate(req.getCpcbSubmissionDate())
+                    .createdByUserId(isAdmin ? null : userId)
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .build();
@@ -251,13 +254,13 @@ public class SurveyService {
     }
 
     @Transactional(readOnly = true)
-    public DashboardStatsDto getDashboardStats(String year, String month, String zone, String ward) {
+    public DashboardStatsDto getDashboardStats(String year, String month, String zone, String ward, Long userId, boolean isAdmin) {
         String filterZone = (zone != null && !zone.equalsIgnoreCase("All Zones")) ? zone : null;
         String filterWard = (ward != null && !ward.equalsIgnoreCase("All Wards")) ? ward : null;
 
-        DashboardStatsDto.CategoryStatDto residential = computeCategoryStat("residential", "Residential Survey Overview", filterZone, filterWard);
-        DashboardStatsDto.CategoryStatDto commercial = computeCategoryStat("commercial", "Commercial Survey Overview", filterZone, filterWard);
-        DashboardStatsDto.CategoryStatDto institutional = computeCategoryStat("institutional", "Institutional Survey Overview", filterZone, filterWard);
+        DashboardStatsDto.CategoryStatDto residential = computeCategoryStat("residential", "Residential Survey Overview", filterZone, filterWard, userId, isAdmin);
+        DashboardStatsDto.CategoryStatDto commercial = computeCategoryStat("commercial", "Commercial Survey Overview", filterZone, filterWard, userId, isAdmin);
+        DashboardStatsDto.CategoryStatDto institutional = computeCategoryStat("institutional", "Institutional Survey Overview", filterZone, filterWard, userId, isAdmin);
 
         long overallTotal = residential.getTotalSurvey().getCount() + commercial.getTotalSurvey().getCount() + institutional.getTotalSurvey().getCount();
         long overallApproved = residential.getSurveyApproved().getCount() + commercial.getSurveyApproved().getCount() + institutional.getSurveyApproved().getCount();
@@ -285,11 +288,11 @@ public class SurveyService {
                 .build();
     }
 
-    private DashboardStatsDto.CategoryStatDto computeCategoryStat(String category, String title, String zone, String ward) {
-        long total = surveyRepository.countFiltered(category, null, zone, ward);
-        long approved = surveyRepository.countFiltered(category, "approved", zone, ward);
-        long rejected = surveyRepository.countFiltered(category, "rejected", zone, ward);
-        long pending = surveyRepository.countFiltered(category, "pending", zone, ward);
+    private DashboardStatsDto.CategoryStatDto computeCategoryStat(String category, String title, String zone, String ward, Long userId, boolean isAdmin) {
+        long total = surveyRepository.countFiltered(category, null, zone, ward, userId, isAdmin);
+        long approved = surveyRepository.countFiltered(category, "approved", zone, ward, userId, isAdmin);
+        long rejected = surveyRepository.countFiltered(category, "rejected", zone, ward, userId, isAdmin);
+        long pending = surveyRepository.countFiltered(category, "pending", zone, ward, userId, isAdmin);
 
         String appPercent = total > 0 ? (Math.round((double) approved / total * 100)) + "%" : "0%";
         String rejPercent = total > 0 ? (Math.round((double) rejected / total * 100)) + "%" : "0%";
@@ -306,22 +309,24 @@ public class SurveyService {
     }
 
     @Transactional(readOnly = true)
-    public List<SurveyResponseDto> getSurveys(String category, String status, String zone, String ward, String search) {
-        List<Survey> list = surveyRepository.filterSurveys(category, status, zone, ward, search);
+    public List<SurveyResponseDto> getSurveys(String category, String status, String zone, String ward, String search, Long userId, boolean isAdmin) {
+        List<Survey> list = surveyRepository.filterSurveys(category, status, zone, ward, search, userId, isAdmin);
         return list.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public SurveyResponseDto getSurveyById(String id) {
+    public SurveyResponseDto getSurveyById(String id, Long userId, boolean isAdmin) {
         Survey survey = surveyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Survey record not found with ID: " + id));
+        requireAccess(survey, userId, isAdmin);
         return mapToDto(survey);
     }
 
     @Transactional
-    public SurveyResponseDto updateWasteVisit(String surveyId, WasteVisitUpdateRequest req) {
+    public SurveyResponseDto updateWasteVisit(String surveyId, WasteVisitUpdateRequest req, Long userId, boolean isAdmin) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new RuntimeException("Survey record not found with ID: " + surveyId));
+        requireAccess(survey, userId, isAdmin);
 
         Optional<SurveyWasteVisit> existingOpt = wasteVisitRepository.findBySurveyIdAndDayNumber(surveyId, req.getDayNumber());
 
@@ -371,9 +376,10 @@ public class SurveyService {
     }
 
     @Transactional
-    public SurveyResponseDto updateCpcb(String surveyId, CPCBUpdateRequest req) {
+    public SurveyResponseDto updateCpcb(String surveyId, CPCBUpdateRequest req, Long userId, boolean isAdmin) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new RuntimeException("Survey record not found with ID: " + surveyId));
+        requireAccess(survey, userId, isAdmin);
 
         if (req.getCompleted() != null) survey.setCpcbCompleted(req.getCompleted());
         if (req.getAckNumber() != null) survey.setCpcbAckNumber(req.getAckNumber());
@@ -385,9 +391,10 @@ public class SurveyService {
     }
 
     @Transactional(readOnly = true)
-    public QRCodeResponseDto getQrCode(String surveyId) {
+    public QRCodeResponseDto getQrCode(String surveyId, Long userId, boolean isAdmin) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new RuntimeException("Survey record not found with ID: " + surveyId));
+        requireAccess(survey, userId, isAdmin);
 
         String bwgStatusText = Boolean.TRUE.equals(survey.getIsBwg()) ? "BWG: YES" : "BWG: NO";
         String qrPayloadText = String.format("PCMC BWG SURVEY REGISTRATION\nID: %s\nEstablishment: %s\nCategory: %s\nStatus: %s\nBWG Classification: %s\nZone: %s | Ward: %s",
@@ -409,15 +416,22 @@ public class SurveyService {
     }
 
     @Transactional(readOnly = true)
-    public byte[] getQrCodePngBytes(String surveyId) {
+    public byte[] getQrCodePngBytes(String surveyId, Long userId, boolean isAdmin) {
         Survey survey = surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new RuntimeException("Survey record not found with ID: " + surveyId));
+        requireAccess(survey, userId, isAdmin);
 
         String bwgStatusText = Boolean.TRUE.equals(survey.getIsBwg()) ? "BWG: YES" : "BWG: NO";
         String qrPayloadText = String.format("PCMC BWG SURVEY REGISTRATION\nID: %s\nEstablishment: %s\nCategory: %s\nStatus: %s\nBWG Classification: %s\nZone: %s | Ward: %s",
                 survey.getId(), survey.getEstablishmentName(), survey.getCategory(), survey.getStatus(), bwgStatusText, survey.getZone(), survey.getWard());
 
         return qrCodeService.generateQRCodePngBytes(qrPayloadText, 400, 400);
+    }
+
+    private void requireAccess(Survey survey, Long userId, boolean isAdmin) {
+        if (!isAdmin && (userId == null || !userId.equals(survey.getCreatedByUserId()))) {
+            throw new AccessDeniedException("You do not have permission to access this survey");
+        }
     }
 
     private SurveyResponseDto mapToDto(Survey s) {
